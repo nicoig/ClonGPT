@@ -134,11 +134,16 @@ def generate_audio_from_text(text):
 # Streamlit app title
 st.markdown("<h1 style='text-align: center; color: white; font-size: 24px;'>Jacobo Grinberg IA</h1>", unsafe_allow_html=True)
 
-# Calcula el ancho de las columnas laterales para centrar la imagen
-col1, col2, col3, col4, col5 = st.columns([1,1,2,1,1])
+# Utiliza 7 columnas para un centrado más preciso
+col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([1,1,1,1,2,1,1,1,1])
 
-with col3:  # Utilizamos la columna central para la imagen
-    st.image("img/img.jpg", width=220)  # Ajusta el ancho según sea necesario
+with col5:  # Esta es la columna central
+    st.image("img/img.jpg", width=240)  # Ajusta el ancho de la imagen según sea necesario
+
+
+
+
+
 
 # Agregar la descripción debajo de la imagen
 st.markdown(

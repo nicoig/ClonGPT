@@ -31,8 +31,5 @@ ENV/
 ehthumbs.db
 Thumbs.db
 
-# Ignorar la carpeta .streamlit
-.streamlit/
-
 # Ignorar el archivo secrets.toml en caso de que esté en otra ubicación
 secrets.toml

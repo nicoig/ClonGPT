@@ -28,6 +28,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+import openai
 
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
@@ -39,7 +40,7 @@ assistant_id = os.getenv("ASSISTANT_ID")
 # Set openAi client, assistant ai and assistant ai thread
 @st.cache_resource
 def load_openai_client_and_assistant():
-    client = OpenAI(api_key=api_key)
+    client = openai.OpenAI(api_key=api_key)
     my_assistant = client.beta.assistants.retrieve(assistant_id)
     thread = client.beta.threads.create()
     return client, my_assistant, thread

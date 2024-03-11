@@ -8,10 +8,17 @@
 # git commit -m "Initial commit"
 # git push -u origin master
 
+
 # Actualizar Repo de Github
 # git add .
 # git commit -m "Se actualizan las variables de entorno"
 # git push origin master
+
+'''
+git add .
+git commit -m "Se actualizan las variables de entorno"
+git push origin master
+'''
 
 # En Render
 # agregar en variables de entorno
@@ -55,10 +62,11 @@ def wait_on_run(run, thread):
 
 # Initiate assistant ai response
 def get_assistant_response(user_input=""):
-    message = client.beta.threads.messages.create(thread_id=assistant_thread.id, role="user", content=user_input)
-    run = client.beta.threads.runs.create(thread_id=assistant_thread.id, assistant_id=assistant_id)
-    run = wait_on_run(run, assistant_thread)
-    messages = client.beta.threads.messages.list(thread_id=assistant_thread.id, order="asc", after=message.id)
+    with st.spinner('Escribiendo Respuesta...'):  # Agregamos un spinner aquí
+        message = client.beta.threads.messages.create(thread_id=assistant_thread.id, role="user", content=user_input)
+        run = client.beta.threads.runs.create(thread_id=assistant_thread.id, assistant_id=assistant_id)
+        run = wait_on_run(run, assistant_thread)
+        messages = client.beta.threads.messages.list(thread_id=assistant_thread.id, order="asc", after=message.id)
     return messages.data[0].content[0].text.value
 
 def encode_image(image_file):
@@ -66,14 +74,19 @@ def encode_image(image_file):
 
 load_dotenv()
 
+# Función para generar audio a partir de texto, con un spinner mientras se graba el audio
 def generate_audio_from_text(text):
     XI_API_KEY = os.getenv('XI_API_KEY')
+    ELEVENLABS_AGENT_ID = os.getenv('ELEVENLABS_AGENT_ID')  # Cargar el ID del agente de IA desde variables de entorno
     if not XI_API_KEY:
         st.error("XI_API_KEY no está definida en las variables de entorno.")
         return None
+    if not ELEVENLABS_AGENT_ID:
+        st.error("ELEVENLABS_AGENT_ID no está definida en las variables de entorno.")
+        return None
 
-    CHUNK_SIZE = 1024
-    url = "https://api.elevenlabs.io/v1/text-to-speech/F2fwisJKWTUIhOEi3FuZ"
+    # Construir la URL utilizando el ID del agente de IA cargado desde las variables de entorno
+    url = f"https://api.elevenlabs.io/v1/text-to-speech/{ELEVENLABS_AGENT_ID}"
 
     headers = {
         "Accept": "audio/mpeg",
@@ -91,17 +104,21 @@ def generate_audio_from_text(text):
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers, timeout=30)
-        if response.status_code == 200:
-            base64_audio = base64.b64encode(response.content).decode('utf-8')
-            audio_html = f'<audio controls autoplay><source src="data:audio/mpeg;base64,{base64_audio}" type="audio/mpeg"></audio>'
-            return audio_html
-        else:
-            st.error(f"Error en la solicitud de texto a voz: {response.status_code}")
-            return None
+        with st.spinner('Grabando Audio...'):  # Muestra un spinner con mensaje
+            response = requests.post(url, json=data, headers=headers, timeout=30)
+            # Retira el spinner una vez que la solicitud ha terminado
+            if response.status_code == 200:
+                base64_audio = base64.b64encode(response.content).decode('utf-8')
+                audio_html = f'<audio controls autoplay><source src="data:audio/mpeg;base64,{base64_audio}" type="audio/mpeg"></audio>'
+                return audio_html
+            else:
+                st.error(f"Error en la solicitud de texto a voz: {response.status_code}")
+                return None
     except requests.exceptions.Timeout:
         st.error("La solicitud de audio ha excedido el tiempo de espera. Por favor, intenta de nuevo.")
         return None
+
+
 
 # Streamlit app title
 st.markdown("<h1 style='text-align: center; color: white; font-size: 24px;'>Jacobo Grinberg IA</h1>", unsafe_allow_html=True)

@@ -1,2 +1,12 @@
+[server]
+# Desactiva la corona de Streamlit (marca de agua)
+enableCORS = false
+
 [theme]
-base = "dark"
+# Activa el tema oscuro
+base="dark"
+primaryColor="#007BFF"
+backgroundColor="#000000"
+secondaryBackgroundColor="#2F2F2F"
+textColor="#FAFAFA"
+font="sans serif"

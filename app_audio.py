@@ -36,6 +36,17 @@ import os
 from dotenv import load_dotenv
 import openai
 
+st.set_page_config(
+   page_title="Jacobo Grinberg IA",  # El título de la página
+   layout="centered",  # Puede ser "centered" o "wide".
+   initial_sidebar_state="collapsed",  # Puede ser "auto", "expanded" o "collapsed"
+   menu_items={
+       'Get Help': None,
+       'Report a bug': None,
+       'About': None
+   }
+)
+
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
 
@@ -124,7 +135,7 @@ def generate_audio_from_text(text):
 st.markdown("<h1 style='text-align: center; color: white; font-size: 24px;'>Jacobo Grinberg IA</h1>", unsafe_allow_html=True)
 
 # Calcula el ancho de las columnas laterales para centrar la imagen
-col1, col2, col3, col4, col5 = st.columns([1,2,2,2,1])
+col1, col2, col3, col4, col5 = st.columns([1,1,2,1,1])
 
 with col3:  # Utilizamos la columna central para la imagen
     st.image("img/img.jpg", width=220)  # Ajusta el ancho según sea necesario

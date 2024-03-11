@@ -60,7 +60,7 @@ st.markdown("<h1 style='text-align: center; color: white; font-size: 24px;'>Jaco
 col1, col2, col3 = st.columns([1,2,1])
 
 with col2:  # Usamos la columna central para la imagen
-    st.image("img/img.jpg", width=220)  # Ajusta el ancho según sea necesario
+    st.image("img/img.jpg", width=2200)  # Ajusta el ancho según sea necesario
 
 
 # Agregar la descripción debajo de la imagen

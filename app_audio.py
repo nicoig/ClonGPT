@@ -27,7 +27,6 @@ import base64
 import requests
 import os
 from dotenv import load_dotenv
-from openai import OpenAI
 import openai
 
 # Carga las variables de entorno desde el archivo .env

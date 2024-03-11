@@ -4,7 +4,7 @@
 # Primera Carga a Github
 # git init
 # git add .
-# git remote add origin https://github.com/nicoig/GPT-Clone.git
+# git remote add origin https://github.com/nicoig/jacobo-grinberg-ia.git
 # git commit -m "Initial commit"
 # git push -u origin master
 
@@ -29,9 +29,12 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
+# Carga las variables de entorno desde el archivo .env
+load_dotenv()
+
 # Set your OpenAI API key and assistant ID here
-api_key = st.secrets["openai_apikey"]
-assistant_id = st.secrets["assistant_id"]
+api_key = os.getenv("OPENAI_APIKEY")
+assistant_id = os.getenv("ASSISTANT_ID")
 
 # Set openAi client, assistant ai and assistant ai thread
 @st.cache_resource

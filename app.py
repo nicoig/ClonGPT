@@ -82,13 +82,19 @@ def save_conversation_to_pdf(conversation):
         height -= 15
     c.save()
 
+# ... (código anterior)
+
 st.markdown("<h1 style='text-align: center; color: white; font-size: 24px;'>ClonGPT</h1>", unsafe_allow_html=True)
 col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([1,1,1,1,2,1,1,1,1])
 
 with col5:
     st.image("img/img.jpg", width=240)
 
-st.markdown(""" <p style="text-align: center;"> Hola, soy ClonGPT, un asistente virtual creado para responder sobre cualquier tema que desees. Puedes cargarme archivos y realizar consultas sobre ellos, o simplemente hacer preguntas sobre cualquier asunto que te interese. Estoy aquí para ayudarte de la mejor manera posible. </p> """, unsafe_allow_html=True)
+st.markdown("""
+<p style="text-align: center;">
+Hola, soy ClonGPT, un asistente virtual creado para responder sobre cualquier tema que desees. Puedes cargarme archivos y realizar consultas sobre ellos, o simplemente hacer preguntas sobre cualquier asunto que te interese. Estoy aquí para ayudarte de la mejor manera posible.
+</p>
+""", unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -97,11 +103,29 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("Escribe tu consulta..."):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
-    response = get_assistant_response(prompt)
-    with st.chat_message("assistant"):
-        st.markdown(response)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+# Crear un contenedor para el cuadro de entrada de texto
+container = st.container()
+
+# Agregar el cuadro de entrada de texto dentro del contenedor
+with container:
+    if prompt := st.chat_input("Escribe tu consulta...", key="input"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        response = get_assistant_response(prompt)
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Aplicar estilos CSS para ajustar la posición y el tamaño del contenedor
+st.markdown(
+    """
+    <style>
+    .stContainer {
+        margin-top: -100px; /* Ajusta el valor según sea necesario */
+        padding: 20px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
